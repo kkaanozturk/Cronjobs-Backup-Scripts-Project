@@ -84,5 +84,3 @@ python3 app.py
 > **Not:** Windows kullanıcıları, bu projeyi tam uyumlulukla çalıştırmak için **WSL (Windows Subsystem for Linux)** kullanmalıdır.
 
 ---
-
-### Bu README dosyası projenin akademik sunumu için yeterli mi, yoksa "Teknik Detaylar" veya "Hata Giderme" gibi ek bölümler ekleyelim mi?
