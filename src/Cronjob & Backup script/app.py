@@ -57,10 +57,33 @@ def index(): return render_template('index.html')
 @app.route('/add_job', methods=['POST'])
 def add_job():
     data = request.json
-    readable = get_description(data['cron'])
-    parts = data['cron'].split()
-    scheduler.add_job(backup_worker, 'cron', minute=parts[0], hour=parts[1], args=[data['user'], data['file_path']])
-    return jsonify({"readable": readable})
+    cron_str = data.get('cron', '').strip()
+    
+    try:
+        # Cron geçerli mi kontrol et ve dile çevir
+        readable = get_description(cron_str)
+        
+        parts = cron_str.split()
+        if len(parts) < 5:
+            raise ValueError("Eksik cron parçası")
+
+        # Zamanlayıcıya ekle
+        scheduler.add_job(
+            backup_worker, 
+            'cron', 
+            minute=parts[0], 
+            hour=parts[1], 
+            day=parts[2],
+            month=parts[3],
+            day_of_week=parts[4],
+            args=[data['user'], data['file_path']]
+        )
+        
+        return jsonify({"message": "Görev Zamanlandı", "readable": readable})
+
+    except Exception as e:
+        # Hata durumunda 400 hatası döndür, sunucu çökmesin
+        return jsonify({"message": "Hata: Geçersiz Cron Formatı!", "error": str(e)}), 400
 
 @app.route('/stream-logs')
 def stream_logs():
@@ -75,4 +98,5 @@ def stream_logs():
     return Response(gen(), mimetype='text/event-stream')
 
 if __name__ == '__main__':
+
     app.run(debug=True, port=5000)
