@@ -1,8 +1,6 @@
 
 ---
 
-### `docs/documentation.md`
-
 # 📖 Sistem Kullanım ve Operasyonel Yönetim Kılavuzu
 
 Bu döküman, **Linux Yedekleme ve Görev Zamanlayıcı** sisteminin kurulumu, konfigürasyonu, operasyonel süreçleri ve hata giderme prosedürlerini kapsar.
